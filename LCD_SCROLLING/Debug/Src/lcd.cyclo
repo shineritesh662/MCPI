@@ -1,0 +1,6 @@
+../Inc/system_stm32f4xx.h:131:20:DelayMs	2
+../Src/lcd.c:9:6:LcdInit	1
+../Src/lcd.c:38:6:LcdWrite4Bit	2
+../Src/lcd.c:58:6:LcdBusyWait	2
+../Src/lcd.c:74:6:LcdWriteByte	1
+../Src/lcd.c:82:6:LcdPuts	2
