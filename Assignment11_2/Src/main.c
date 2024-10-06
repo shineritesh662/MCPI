@@ -20,30 +20,32 @@
 #include <stdio.h>
 #include "stm32f4xx.h"
 #include "system_stm32f4xx.h"
+#include "timer.h"
+#include "led.h"
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
-#include "i2c_lcd.h"
-#include "string.h"
-int main(void)
-{
-	int ret, count;
-	char str[80];
+int main(void) {
 	SystemInit();
-	ret = Lcd_Init();
-	if(ret)
-	{
-//		Lcd_Puts(LCD_LINE1, "M.S.DHONI 07");
-		for(count = 1; count < 100; count++)
-		{
-			sprintf(str, "RITESH_SHINDE_662", count);
-			DelayMs(2000);
-			Lcd_Puts(LCD_LINE1, str);
-			DelayMs(500);
-		}
+	Timer_Init();
+	LedInit(LED_RED_PIN);
+	LedInit(LED_ORANGE_PIN);
+	LedInit(LED_GREEN_PIN);
+	LedInit(LED_BLUE_PIN);
+	while(1) {
+		Timer_Delay(7000);
+		LedOn(LED_RED_PIN);
+		LedOn(LED_ORANGE_PIN);
+		LedOn(LED_GREEN_PIN);
+		LedOn(LED_BLUE_PIN);
+		Timer_Delay(3000);
+		LedOff(LED_RED_PIN);
+		LedOff(LED_ORANGE_PIN);
+		LedOff(LED_GREEN_PIN);
+		LedOff(LED_BLUE_PIN);
+
 	}
 	return 0;
 }
-

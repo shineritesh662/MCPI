@@ -21,29 +21,28 @@
 #include "stm32f4xx.h"
 #include "system_stm32f4xx.h"
 
+#include "rtc.h"
+#include "uart.h"
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
-#include "i2c_lcd.h"
-#include "string.h"
-int main(void)
-{
-	int ret, count;
-	char str[80];
+int main(void) {
+	char str[64];
 	SystemInit();
-	ret = Lcd_Init();
-	if(ret)
-	{
-//		Lcd_Puts(LCD_LINE1, "M.S.DHONI 07");
-		for(count = 1; count < 100; count++)
-		{
-			sprintf(str, "RITESH_SHINDE_662", count);
-			DelayMs(2000);
-			Lcd_Puts(LCD_LINE1, str);
-			DelayMs(500);
-		}
+	UartInit(9600);
+	UartPuts("STM32 RTC Demo!!\r\n");
+	RTC_Date dt = { .Date = 28, .Month = 02, .Year = 24, .WeekDay = 2 };
+	RTC_Time tm = { .Hour = 23, .Minute = 59, .Second = 50 };
+	RTC_Init(&dt, &tm);
+	while(1) {
+		RTC_GetDate(&dt);
+		RTC_GetTime(&tm);
+		sprintf(str, "%02d-%02d-20%02d (%d) %02d:%02d:%02d\r\n",
+				dt.Date, dt.Month, dt.Year, dt.WeekDay,
+				tm.Hour, tm.Minute, tm.Second);
+		UartPuts(str);
+		DelayMs(1000);
 	}
 	return 0;
 }
-
